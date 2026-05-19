@@ -29,7 +29,8 @@ export default function Results({ user }) {
   const [saved, setSaved] = useState(false)
 
   const handleSave = async () => {
-    if (!user?.uid) return
+    if (!user?.uid || saved) return
+    setSaved(true)
     try {
       await addDoc(collection(db, 'users', user.uid, 'playlists'), {
         name: `${mood} MIX`,
@@ -37,9 +38,9 @@ export default function Results({ user }) {
         createdAt: serverTimestamp(),
         tracks: PLACEHOLDER_TRACKS,
       })
-      setSaved(true)
     } catch (err) {
       console.error('Save failed:', err)
+      setSaved(false)
     }
   }
 
