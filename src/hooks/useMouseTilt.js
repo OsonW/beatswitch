@@ -9,6 +9,7 @@ export function useMouseTilt(ref) {
 
     const onMove = (e) => {
       const rect = el.getBoundingClientRect()
+      if (rect.width === 0 || rect.height === 0) return
       const cx = rect.left + rect.width / 2
       const cy = rect.top + rect.height / 2
       const rotateY = ((e.clientX - cx) / (rect.width / 2)) * 15
@@ -24,7 +25,7 @@ export function useMouseTilt(ref) {
       el.removeEventListener('mousemove', onMove)
       el.removeEventListener('mouseleave', onLeave)
     }
-  }, [ref])
+  }, []) // ref object is stable — effect runs once on mount
 
   return tilt
 }

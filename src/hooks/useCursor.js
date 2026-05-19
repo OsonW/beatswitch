@@ -5,7 +5,7 @@ export function useCursor() {
 
   useEffect(() => {
     const handler = (e) => setPos({ x: e.clientX, y: e.clientY })
-    document.addEventListener('mousemove', handler)
+    document.addEventListener('mousemove', handler, { passive: true })
     return () => document.removeEventListener('mousemove', handler)
   }, [])
 
