@@ -2,17 +2,10 @@ import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { signInWithPopup, GoogleAuthProvider, signInAnonymously } from 'firebase/auth'
 import { auth } from '../firebase'
+import { trackAmber } from '../utils/trackAmber'
 import './Login.css'
 
 const HEADLINE = 'BEATSWITCH'
-
-const trackAmber = (e) => {
-  const r = e.currentTarget.getBoundingClientRect()
-  const x = ((e.clientX - r.left) / r.width) * 100
-  const y = ((e.clientY - r.top) / r.height) * 100
-  e.currentTarget.style.setProperty('--bx', `${x}%`)
-  e.currentTarget.style.setProperty('--by', `${y}%`)
-}
 
 export default function Login() {
   const navigate = useNavigate()

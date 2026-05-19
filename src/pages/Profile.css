@@ -61,3 +61,11 @@
 .profile__signout:hover {
   opacity: 0.85;
 }
+
+.profile__error {
+  margin-top: 16px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 100, 100, 0.8);
+}

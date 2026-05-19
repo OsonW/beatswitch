@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import VibeCard from '../components/VibeCard'
+import { trackAmber } from '../utils/trackAmber'
 import './Home.css'
 
 const VIBES = [
@@ -12,14 +13,6 @@ const VIBES = [
   { emoji: '🌫️', label: 'NUMB' },
   { emoji: '🧪', label: 'WIRED' },
 ]
-
-const trackAmber = (e) => {
-  const r = e.currentTarget.getBoundingClientRect()
-  const x = ((e.clientX - r.left) / r.width) * 100
-  const y = ((e.clientY - r.top) / r.height) * 100
-  e.currentTarget.style.setProperty('--bx', `${x}%`)
-  e.currentTarget.style.setProperty('--by', `${y}%`)
-}
 
 export default function Home({ user }) {
   const [mood, setMood] = useState('')

@@ -4,6 +4,7 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../firebase'
 import Navbar from '../components/Navbar'
 import TrackCard from '../components/TrackCard'
+import { trackAmber } from '../utils/trackAmber'
 import './Results.css'
 
 const PLACEHOLDER_TRACKS = [
@@ -13,14 +14,6 @@ const PLACEHOLDER_TRACKS = [
   { title: 'Garden Song', artist: 'PHOEBE BRIDGERS', duration: '2:33' },
   { title: 'Nobody', artist: 'MITSKI', duration: '2:42' },
 ]
-
-const trackAmber = (e) => {
-  const r = e.currentTarget.getBoundingClientRect()
-  const x = ((e.clientX - r.left) / r.width) * 100
-  const y = ((e.clientY - r.top) / r.height) * 100
-  e.currentTarget.style.setProperty('--bx', `${x}%`)
-  e.currentTarget.style.setProperty('--by', `${y}%`)
-}
 
 export default function Results({ user }) {
   const { state } = useLocation()

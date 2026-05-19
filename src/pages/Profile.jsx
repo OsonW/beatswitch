@@ -1,19 +1,14 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { signOut } from 'firebase/auth'
 import { auth } from '../firebase'
 import Navbar from '../components/Navbar'
+import { trackAmber } from '../utils/trackAmber'
 import './Profile.css'
-
-const trackAmber = (e) => {
-  const r = e.currentTarget.getBoundingClientRect()
-  const x = ((e.clientX - r.left) / r.width) * 100
-  const y = ((e.clientY - r.top) / r.height) * 100
-  e.currentTarget.style.setProperty('--bx', `${x}%`)
-  e.currentTarget.style.setProperty('--by', `${y}%`)
-}
 
 export default function Profile({ user }) {
   const navigate = useNavigate()
+  const [signOutError, setSignOutError] = useState(null)
 
   const displayName =
     user?.displayName ?? (user?.isAnonymous ? 'GUEST' : 'USER')
@@ -21,8 +16,13 @@ export default function Profile({ user }) {
   const initial = displayName[0]?.toUpperCase() ?? '?'
 
   const handleSignOut = async () => {
-    await signOut(auth)
-    navigate('/login')
+    try {
+      await signOut(auth)
+      navigate('/login')
+    } catch (err) {
+      console.error('Sign out failed:', err)
+      setSignOutError('Sign out failed. Please try again.')
+    }
   }
 
   return (
@@ -47,6 +47,9 @@ export default function Profile({ user }) {
         >
           SIGN OUT
         </button>
+        {signOutError && (
+          <p className="profile__error">{signOutError}</p>
+        )}
       </main>
 
       <Navbar />
