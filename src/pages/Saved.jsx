@@ -26,7 +26,7 @@ export default function Saved({ user }) {
     return onSnapshot(q, (snap) => {
       setPlaylists(snap.docs.map((d) => ({ id: d.id, ...d.data() })))
     })
-  }, [user])
+  }, [user?.uid])
 
   const toggle = (id) =>
     setExpanded((prev) => (prev === id ? null : id))
