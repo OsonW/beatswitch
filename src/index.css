@@ -9,6 +9,7 @@
   --white: #ffffff;
   --amber: #F5A623;
   --font: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color-scheme: dark;
 }
 
 html,
@@ -19,6 +20,8 @@ body {
   cursor: none;
   overflow-x: hidden;
   min-height: 100vh;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) #080808;
 }
 
 ::-webkit-scrollbar { width: 2px; }
@@ -41,6 +44,7 @@ body {
   letter-spacing: -0.05em;
   text-transform: uppercase;
   animation: splash-pulse 1.4s ease-in-out infinite;
+  color: var(--white);
 }
 
 @keyframes splash-pulse {
