@@ -1,35 +1,74 @@
 .vibe-card {
-  width: 140px;
-  height: 180px;
   flex-shrink: 0;
-  background: #080808;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 20px 16px;
-  cursor: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  transform-style: preserve-3d;
-  will-change: transform;
+  width: 160px;
+  height: 80px;
+  border-radius: var(--radius-pill);
+  perspective: 600px;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+  user-select: none;
 }
 
-.vibe-card:hover {
-  border-color: #F5A623;
-  box-shadow: 0 0 20px rgba(245, 166, 35, 0.35);
+.vibe-card--active {
+  box-shadow: 0 0 0 2px var(--coral), 0 0 12px rgba(255,107,53,0.3);
+}
+
+.vibe-card:active {
+  transform: scale(0.95);
+  transition: transform 0.08s ease;
+}
+
+.vibe-card__inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: var(--radius-pill);
+}
+
+.vibe-card--flipped .vibe-card__inner {
+  transform: rotateY(180deg);
+}
+
+.vibe-card__front,
+.vibe-card__back {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-pill);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: var(--vc-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 16px;
+}
+
+.vibe-card__back {
+  transform: rotateY(180deg);
 }
 
 .vibe-card__emoji {
-  font-size: 32px;
-  line-height: 1;
+  font-size: 22px;
 }
 
 .vibe-card__label {
-  font-size: 10px;
-  letter-spacing: 0.2em;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.6);
-  font-family: system-ui, sans-serif;
+  color: rgba(255,255,255,0.95);
+  white-space: nowrap;
+}
+
+.vibe-card__desc {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.9);
+  text-align: center;
+  line-height: 1.4;
 }
