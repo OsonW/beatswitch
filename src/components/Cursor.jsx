@@ -7,6 +7,8 @@ export default function Cursor() {
   const mouse = useRef({ x: -100, y: -100 })
   const follower = useRef({ x: -100, y: -100 })
   const rafId = useRef(null)
+  const isHoverRef = useRef(false)
+  const isAmberRef = useRef(false)
   const [isHover, setIsHover] = useState(false)
   const [isAmber, setIsAmber] = useState(false)
 
@@ -18,8 +20,16 @@ export default function Cursor() {
         dotRef.current.style.top = `${e.clientY}px`
       }
       const target = e.target
-      setIsHover(!!target.closest('[data-cursor-hover]'))
-      setIsAmber(!!target.closest('[data-cursor-amber]'))
+      const newHover = !!target.closest('[data-cursor-hover]')
+      const newAmber = !!target.closest('[data-cursor-amber]')
+      if (newHover !== isHoverRef.current) {
+        isHoverRef.current = newHover
+        setIsHover(newHover)
+      }
+      if (newAmber !== isAmberRef.current) {
+        isAmberRef.current = newAmber
+        setIsAmber(newAmber)
+      }
     }
     document.addEventListener('mousemove', onMove)
     return () => document.removeEventListener('mousemove', onMove)
