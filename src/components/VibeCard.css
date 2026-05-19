@@ -1,0 +1,35 @@
+.vibe-card {
+  width: 140px;
+  height: 180px;
+  flex-shrink: 0;
+  background: #080808;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px 16px;
+  cursor: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.vibe-card:hover {
+  border-color: #F5A623;
+  box-shadow: 0 0 20px rgba(245, 166, 35, 0.35);
+}
+
+.vibe-card__emoji {
+  font-size: 32px;
+  line-height: 1;
+}
+
+.vibe-card__label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: system-ui, sans-serif;
+}
