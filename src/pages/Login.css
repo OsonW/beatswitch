@@ -92,3 +92,12 @@
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.2);
 }
+
+.login__error {
+  padding: 0 40px;
+  margin-top: 16px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 100, 100, 0.8);
+}

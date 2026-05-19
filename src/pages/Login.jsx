@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { signInWithPopup, GoogleAuthProvider, signInAnonymously } from 'firebase/auth'
 import { auth } from '../firebase'
@@ -16,6 +16,7 @@ const trackAmber = (e) => {
 
 export default function Login() {
   const navigate = useNavigate()
+  const [authError, setAuthError] = useState(null)
   const letterRefs = useRef([])
 
   const handleHeadlineMove = (e) => {
@@ -35,7 +36,7 @@ export default function Login() {
       await signInWithPopup(auth, new GoogleAuthProvider())
       navigate('/home')
     } catch (err) {
-      console.error('Sign in failed:', err)
+      setAuthError('Sign in failed. Please try again.')
     }
   }
 
@@ -44,7 +45,7 @@ export default function Login() {
       await signInAnonymously(auth)
       navigate('/home')
     } catch (err) {
-      console.error('Guest sign in failed:', err)
+      setAuthError('Could not continue as guest. Please try again.')
     }
   }
 
@@ -85,6 +86,10 @@ export default function Login() {
           CONTINUE AS GUEST
         </button>
       </div>
+
+      {authError && (
+        <p className="login__error">{authError}</p>
+      )}
 
       <div className="login__features">
         <span>MOOD-AWARE CURATION</span>
