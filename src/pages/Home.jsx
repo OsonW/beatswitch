@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import VibeCard from '../components/VibeCard'
-import { trackAmber } from '../utils/trackAmber'
 import './Home.css'
 
 const VIBES = [
@@ -54,7 +53,6 @@ export default function Home({ user }) {
           <button
             className="home__generate-btn"
             onClick={handleGenerate}
-            onMouseMove={trackAmber}
             data-cursor-hover
             data-cursor-amber
           >

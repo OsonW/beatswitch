@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import { signOut } from 'firebase/auth'
 import { auth } from '../firebase'
 import Navbar from '../components/Navbar'
-import { trackAmber } from '../utils/trackAmber'
 import './Profile.css'
 
 export default function Profile({ user }) {
@@ -41,7 +40,6 @@ export default function Profile({ user }) {
         <button
           className="profile__signout"
           onClick={handleSignOut}
-          onMouseMove={trackAmber}
           data-cursor-hover
           data-cursor-amber
         >

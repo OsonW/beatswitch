@@ -2,7 +2,6 @@ import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { signInWithPopup, GoogleAuthProvider, signInAnonymously } from 'firebase/auth'
 import { auth } from '../firebase'
-import { trackAmber } from '../utils/trackAmber'
 import './Login.css'
 
 const HEADLINE = 'BEATSWITCH'
@@ -65,7 +64,6 @@ export default function Login() {
         <button
           className="login__btn login__btn--spotify"
           onClick={handleSpotify}
-          onMouseMove={trackAmber}
           data-cursor-hover
           data-cursor-amber
         >

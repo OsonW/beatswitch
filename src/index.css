@@ -5,55 +5,136 @@
 }
 
 :root {
-  --black: #080808;
-  --white: #ffffff;
-  --amber: #F5A623;
+  --bg: #0A0A0A;
+  --bg-card: #1A1A1A;
+  --bg-muted: #333333;
+  --coral: #FF6B35;
+  --lime: #C8FF00;
+  --violet: #A259FF;
+  --white: #F5F5F5;
+  --muted: #555555;
   --font: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --radius-pill: 999px;
+  --radius-card: 24px;
+  --radius-lg: 32px;
+  --radius-xl: 48px;
   color-scheme: dark;
 }
 
-html,
-body {
-  background-color: var(--black);
+html, body {
+  background: var(--bg);
   color: var(--white);
   font-family: var(--font);
-  cursor: none;
   overflow-x: hidden;
   min-height: 100vh;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.2) #080808;
+  scrollbar-width: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-::-webkit-scrollbar { width: 2px; }
-::-webkit-scrollbar-track { background: var(--black); }
-::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); }
+::-webkit-scrollbar { display: none; }
 
-.loading-splash {
-  position: fixed;
-  inset: 0;
-  background: var(--black);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
+::selection {
+  background: var(--coral);
+  color: #000;
 }
 
-.loading-splash__text {
-  font-size: clamp(80px, 15vw, 140px);
-  font-weight: 900;
-  letter-spacing: -0.05em;
-  text-transform: uppercase;
-  animation: splash-pulse 1.4s ease-in-out infinite;
-  color: var(--white);
+button {
+  font-family: var(--font);
+  cursor: pointer;
+  border: none;
+  background: none;
 }
 
-@keyframes splash-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.12; }
+button:active {
+  transform: scale(0.95);
+  transition: transform 0.08s ease;
 }
 
 .page {
   min-height: 100vh;
-  background: var(--black);
-  padding-bottom: 60px;
+  background: var(--bg);
+  padding-bottom: 80px;
+}
+
+/* ── Loading splash ───────────────────────────── */
+.loading-splash {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  z-index: 10000;
+}
+
+.loading-eq {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 36px;
+}
+
+.loading-eq__bar {
+  width: 4px;
+  border-radius: 2px;
+  background: var(--coral);
+  animation: eq-bounce 0.9s ease-in-out infinite alternate;
+}
+
+.loading-eq__bar:nth-child(1) { animation-delay: 0s;    animation-duration: 0.9s; }
+.loading-eq__bar:nth-child(2) { animation-delay: 0.15s; animation-duration: 0.8s; }
+.loading-eq__bar:nth-child(3) { animation-delay: 0.3s;  animation-duration: 1.1s; }
+.loading-eq__bar:nth-child(4) { animation-delay: 0.45s; animation-duration: 0.75s; }
+.loading-eq__bar:nth-child(5) { animation-delay: 0.6s;  animation-duration: 0.95s; }
+
+@keyframes eq-bounce {
+  0%   { height: 4px; }
+  100% { height: 36px; }
+}
+
+.loading-label {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ── Shared keyframes ─────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes blob-morph {
+  0%, 100% { border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%; }
+  33%       { border-radius: 40% 60% 30% 70% / 60% 40% 60% 40%; }
+  66%       { border-radius: 70% 30% 50% 50% / 40% 60% 50% 60%; }
+}
+
+@keyframes ripple-expand {
+  from { transform: translate(-50%, -50%) scale(0); opacity: 0.5; }
+  to   { transform: translate(-50%, -50%) scale(4); opacity: 0; }
+}
+
+/* ── Ripple host ──────────────────────────────── */
+.ripple-host {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-circle {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+  animation: ripple-expand 0.55s ease-out forwards;
 }

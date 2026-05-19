@@ -4,7 +4,6 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../firebase'
 import Navbar from '../components/Navbar'
 import TrackCard from '../components/TrackCard'
-import { trackAmber } from '../utils/trackAmber'
 import './Results.css'
 
 const PLACEHOLDER_TRACKS = [
@@ -69,7 +68,6 @@ export default function Results({ user }) {
           <button
             className="results__btn results__btn--save"
             onClick={handleSave}
-            onMouseMove={trackAmber}
             disabled={saved}
             data-cursor-hover
             data-cursor-amber

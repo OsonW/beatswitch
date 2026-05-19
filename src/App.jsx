@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from './firebase'
-import Cursor from './components/Cursor'
 import Login from './pages/Login'
 import Home from './pages/Home'
 import Results from './pages/Results'
@@ -22,7 +21,14 @@ function AuthRoute({ user, children }) {
 function LoadingSplash() {
   return (
     <div className="loading-splash">
-      <span className="loading-splash__text">BS</span>
+      <div className="loading-eq">
+        <div className="loading-eq__bar" />
+        <div className="loading-eq__bar" />
+        <div className="loading-eq__bar" />
+        <div className="loading-eq__bar" />
+        <div className="loading-eq__bar" />
+      </div>
+      <p className="loading-label">BEATSWITCH</p>
     </div>
   )
 }
@@ -38,32 +44,13 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <Cursor />
       <Routes>
-        <Route
-          path="/login"
-          element={<AuthRoute user={user}><Login /></AuthRoute>}
-        />
-        <Route
-          path="/home"
-          element={<ProtectedRoute user={user}><Home user={user} /></ProtectedRoute>}
-        />
-        <Route
-          path="/results"
-          element={<ProtectedRoute user={user}><Results user={user} /></ProtectedRoute>}
-        />
-        <Route
-          path="/saved"
-          element={<ProtectedRoute user={user}><Saved user={user} /></ProtectedRoute>}
-        />
-        <Route
-          path="/profile"
-          element={<ProtectedRoute user={user}><Profile user={user} /></ProtectedRoute>}
-        />
-        <Route
-          path="*"
-          element={<Navigate to={user ? '/home' : '/login'} replace />}
-        />
+        <Route path="/login"   element={<AuthRoute user={user}><Login /></AuthRoute>} />
+        <Route path="/home"    element={<ProtectedRoute user={user}><Home user={user} /></ProtectedRoute>} />
+        <Route path="/results" element={<ProtectedRoute user={user}><Results user={user} /></ProtectedRoute>} />
+        <Route path="/saved"   element={<ProtectedRoute user={user}><Saved user={user} /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute user={user}><Profile user={user} /></ProtectedRoute>} />
+        <Route path="*"        element={<Navigate to={user ? '/home' : '/login'} replace />} />
       </Routes>
     </BrowserRouter>
   )
