@@ -7,10 +7,9 @@ import './Profile.css'
 
 export default function Profile({ user }) {
   const navigate = useNavigate()
-  const [signOutError, setSignOutError] = useState(null)
+  const [error, setError] = useState(null)
 
-  const displayName =
-    user?.displayName ?? (user?.isAnonymous ? 'GUEST' : 'USER')
+  const displayName = user?.displayName ?? (user?.isAnonymous ? 'GUEST' : 'USER')
   const uid = user?.uid?.slice(0, 8).toUpperCase() ?? '—'
   const initial = displayName[0]?.toUpperCase() ?? '?'
 
@@ -20,7 +19,7 @@ export default function Profile({ user }) {
       navigate('/login')
     } catch (err) {
       console.error('Sign out failed:', err)
-      setSignOutError('Sign out failed. Please try again.')
+      setError('Sign out failed. Please try again.')
     }
   }
 
@@ -35,19 +34,23 @@ export default function Profile({ user }) {
           </div>
         </div>
 
+        <div className="profile__stats">
+          <div className="profile__stat">
+            <span className="profile__stat-value">—</span>
+            <span className="profile__stat-label">PLAYLISTS</span>
+          </div>
+          <div className="profile__stat">
+            <span className="profile__stat-value">♪</span>
+            <span className="profile__stat-label">MEMBER</span>
+          </div>
+        </div>
+
         <div className="profile__divider" />
 
-        <button
-          className="profile__signout"
-          onClick={handleSignOut}
-          data-cursor-hover
-          data-cursor-amber
-        >
+        <button className="profile__signout" onClick={handleSignOut}>
           SIGN OUT
         </button>
-        {signOutError && (
-          <p className="profile__error">{signOutError}</p>
-        )}
+        {error && <p className="profile__error">{error}</p>}
       </main>
 
       <Navbar />
