@@ -1,31 +1,36 @@
 import { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../firebase'
-import Navbar from '../components/Navbar'
+import Vinyl from '../components/Vinyl'
+import Waveform from '../components/Waveform'
 import TrackCard from '../components/TrackCard'
 import './Results.css'
 
 const PLACEHOLDER_TRACKS = [
-  { title: 'Silver Lining', artist: 'MITSKI', duration: '3:42' },
-  { title: 'Motion Sickness', artist: 'PHOEBE BRIDGERS', duration: '4:01' },
-  { title: 'Dissolve', artist: 'ABSOFACTO', duration: '3:18' },
-  { title: 'Garden Song', artist: 'PHOEBE BRIDGERS', duration: '2:33' },
-  { title: 'Nobody', artist: 'MITSKI', duration: '2:42' },
+  { name: 'Nights',         artist: 'Frank Ocean',   duration: '5:07' },
+  { name: 'After Hours',    artist: 'The Weeknd',    duration: '6:01' },
+  { name: 'Motion Picture', artist: 'Bryson Tiller', duration: '4:22' },
+  { name: 'Pyramids',       artist: 'Frank Ocean',   duration: '9:52' },
+  { name: 'Self Control',   artist: 'Frank Ocean',   duration: '4:10' },
+  { name: 'Do Not Disturb', artist: 'Drake',         duration: '3:46' },
+  { name: 'Slow Dancing',   artist: 'V',             duration: '3:59' },
 ]
 
 export default function Results({ user }) {
-  const { state } = useLocation()
   const navigate = useNavigate()
-  const mood = state?.mood ?? 'UNKNOWN'
+  const { state } = useLocation()
+  const mood = state?.mood ?? 'your vibe'
+
   const [saved, setSaved] = useState(false)
+  const [playingIndex, setPlayingIndex] = useState(0)
 
   const handleSave = async () => {
     if (!user?.uid || saved) return
     setSaved(true)
     try {
       await addDoc(collection(db, 'users', user.uid, 'playlists'), {
-        name: `${mood} MIX`,
+        name: `${mood.toUpperCase()} MIX`,
         mood,
         createdAt: serverTimestamp(),
         tracks: PLACEHOLDER_TRACKS,
@@ -39,51 +44,41 @@ export default function Results({ user }) {
   return (
     <div className="results page">
       <header className="results__header">
-        <button
-          className="results__back"
-          onClick={() => navigate(-1)}
-          data-cursor-hover
-        >
-          ←
-        </button>
+        <button className="results__back" onClick={() => navigate(-1)}>←</button>
+        <span className="results__title">YOUR PLAYLIST</span>
+        <div style={{ width: 40 }} />
       </header>
 
-      <main className="results__main">
-        <p className="results__mood">"{mood}"</p>
-        <p className="results__subtitle">— GENERATED FOR YOU —</p>
+      <div className="results__mood-area">
+        <p className="results__mood-label">"{mood}"</p>
+        <Vinyl size="small" active />
+        <Waveform speed="fast" />
+      </div>
 
-        <div className="results__tracks">
-          {PLACEHOLDER_TRACKS.map((track, i) => (
-            <TrackCard
-              key={i}
-              number={i + 1}
-              title={track.title}
-              artist={track.artist}
-              duration={track.duration}
-            />
-          ))}
-        </div>
+      <div className="results__tracks">
+        {PLACEHOLDER_TRACKS.map((track, i) => (
+          <TrackCard
+            key={i}
+            track={track}
+            index={i}
+            playing={i === playingIndex}
+            onSave={handleSave}
+          />
+        ))}
+      </div>
 
-        <div className="results__actions">
-          <button
-            className="results__btn results__btn--save"
-            onClick={handleSave}
-            disabled={saved}
-            data-cursor-hover
-            data-cursor-amber
-          >
-            {saved ? 'SAVED ✓' : 'SAVE PLAYLIST'}
-          </button>
-          <button
-            className="results__btn results__btn--export"
-            data-cursor-hover
-          >
-            EXPORT TO SPOTIFY
-          </button>
-        </div>
-      </main>
-
-      <Navbar />
+      <div className="results__actions">
+        <button
+          className={`results__btn results__btn--save${saved ? ' results__btn--saved' : ''}`}
+          onClick={handleSave}
+          disabled={saved}
+        >
+          {saved ? '✓ SAVED' : 'SAVE'}
+        </button>
+        <button className="results__btn results__btn--spotify">
+          SPOTIFY
+        </button>
+      </div>
     </div>
   )
 }
