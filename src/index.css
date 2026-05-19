@@ -43,11 +43,11 @@ button {
   cursor: pointer;
   border: none;
   background: none;
+  transition: transform 0.08s ease;
 }
 
 button:active {
   transform: scale(0.95);
-  transition: transform 0.08s ease;
 }
 
 .page {
@@ -81,6 +81,7 @@ button:active {
   border-radius: 2px;
   background: var(--coral);
   animation: eq-bounce 0.9s ease-in-out infinite alternate;
+  will-change: height;
 }
 
 .loading-eq__bar:nth-child(1) { animation-delay: 0s;    animation-duration: 0.9s; }
