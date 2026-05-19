@@ -1,0 +1,94 @@
+.login {
+  position: relative;
+  min-height: 100vh;
+  background: #080808;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.login__header {
+  padding: 48px 40px 0;
+}
+
+.login__headline {
+  font-size: clamp(64px, 11vw, 110px);
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  line-height: 0.9;
+  color: #ffffff;
+  white-space: nowrap;
+  display: flex;
+  margin-left: -3px;
+}
+
+.login__letter {
+  display: inline-block;
+  transition: transform 0.08s ease-out;
+  will-change: transform;
+}
+
+.login__tagline {
+  margin-top: 20px;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.login__divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15);
+  margin-top: 40px;
+}
+
+.login__actions {
+  padding: 40px 40px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.login__btn {
+  font-family: system-ui, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 16px 36px;
+  border-radius: 0;
+  cursor: none;
+  font-weight: 700;
+  transition: opacity 0.2s ease;
+  border: none;
+}
+
+.login__btn:hover {
+  opacity: 0.85;
+}
+
+.login__btn--spotify {
+  background: radial-gradient(circle at var(--bx, 50%) var(--by, 50%), #ffca5e 0%, #F5A623 65%);
+  color: #080808;
+}
+
+.login__btn--guest {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.login__features {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 7px;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.2);
+}
