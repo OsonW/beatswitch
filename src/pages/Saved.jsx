@@ -1,21 +1,75 @@
-import { useState, useEffect } from 'react'
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
+import { useState, useEffect, useRef } from 'react'
+import { collection, query, orderBy, onSnapshot, deleteDoc, doc } from 'firebase/firestore'
 import { db } from '../firebase'
+import { useLongPress } from '../hooks/useLongPress'
 import Navbar from '../components/Navbar'
+import Waveform from '../components/Waveform'
 import './Saved.css'
 
-const formatDate = (ts) => {
-  if (!ts?.seconds) return '—'
-  return new Date(ts.seconds * 1000).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  })
+function PlaylistCard({ playlist, uid }) {
+  const [expanded, setExpanded] = useState(false)
+  const [showDelete, setShowDelete] = useState(false)
+
+  const longPress = useLongPress(() => setShowDelete(true))
+
+  const handleDelete = async () => {
+    try {
+      await deleteDoc(doc(db, 'users', uid, 'playlists', playlist.id))
+    } catch (err) {
+      console.error('Delete failed:', err)
+    }
+  }
+
+  const formatDate = (ts) => {
+    if (!ts?.toDate) return ''
+    return ts.toDate().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  }
+
+  return (
+    <div className={`pl-card${showDelete ? ' pl-card--delete-mode' : ''}`}>
+      <div
+        className="pl-card__row"
+        onClick={() => { setExpanded(e => !e); setShowDelete(false) }}
+        {...longPress}
+      >
+        <div className="pl-card__info">
+          <p className="pl-card__name">{playlist.name}</p>
+          <div className="pl-card__meta">
+            <span className="pl-card__date">{formatDate(playlist.createdAt)}</span>
+            <span className="pl-card__dot">·</span>
+            <Waveform speed="slow" bars={4} color="var(--muted)" />
+            <span className="pl-card__count">{playlist.tracks?.length ?? 0} tracks</span>
+          </div>
+        </div>
+        <span className="pl-card__chevron">{expanded ? '▲' : '▼'}</span>
+      </div>
+
+      {showDelete && (
+        <div className="pl-card__delete-bar">
+          <button className="pl-card__delete-btn" onClick={handleDelete}>DELETE PLAYLIST</button>
+          <button className="pl-card__cancel-btn" onClick={() => setShowDelete(false)}>CANCEL</button>
+        </div>
+      )}
+
+      {expanded && (
+        <div className="pl-card__tracks">
+          {(playlist.tracks ?? []).map((t, i) => (
+            <div key={i} className="pl-card__track">
+              <span className="pl-card__track-name">{t.name}</span>
+              <span className="pl-card__track-artist">{t.artist}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
 }
 
 export default function Saved({ user }) {
   const [playlists, setPlaylists] = useState([])
-  const [expanded, setExpanded] = useState(null)
+  const [refreshKey, setRefreshKey] = useState(0)
+  const [pulling, setPulling] = useState(false)
+  const pullStartY = useRef(null)
 
   useEffect(() => {
     if (!user?.uid) return
@@ -24,59 +78,64 @@ export default function Saved({ user }) {
       orderBy('createdAt', 'desc')
     )
     return onSnapshot(q, (snap) => {
-      setPlaylists(snap.docs.map((d) => ({ id: d.id, ...d.data() })))
+      setPlaylists(snap.docs.map(d => ({ id: d.id, ...d.data() })))
     })
-  }, [user?.uid])
+  }, [user?.uid, refreshKey])
 
-  const toggle = (id) =>
-    setExpanded((prev) => (prev === id ? null : id))
+  const handleTouchStart = (e) => { pullStartY.current = e.touches[0].clientY }
+  const handleTouchMove = (e) => {
+    if (pullStartY.current === null) return
+    if (e.touches[0].clientY - pullStartY.current > 60 && window.scrollY === 0) {
+      setPulling(true)
+    }
+  }
+  const handleTouchEnd = () => {
+    if (pulling) {
+      setRefreshKey(k => k + 1)
+      setTimeout(() => setPulling(false), 800)
+    }
+    pullStartY.current = null
+  }
 
   return (
-    <div className="saved page">
-      <div className="saved__watermark" aria-hidden="true">SAVED</div>
+    <div
+      className="saved page"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      {pulling && (
+        <div className="saved__pull-indicator">
+          <div className="loading-eq">
+            <div className="loading-eq__bar" />
+            <div className="loading-eq__bar" />
+            <div className="loading-eq__bar" />
+            <div className="loading-eq__bar" />
+            <div className="loading-eq__bar" />
+          </div>
+        </div>
+      )}
+
+      <header className="saved__header">
+        <div className="saved__watermark">SAVED</div>
+        <p className="saved__subtitle">YOUR PLAYLISTS</p>
+      </header>
 
       <main className="saved__main">
         {playlists.length === 0 ? (
           <div className="saved__empty">
-            <div className="saved__empty-line" />
-            <p className="saved__empty-text">NO SAVED PLAYLISTS YET</p>
-            <div className="saved__empty-line" />
+            <span className="saved__empty-note">♪</span>
+            <p className="saved__empty-text">nothing saved yet</p>
+            <a className="saved__empty-link" href="/home">generate your first playlist →</a>
           </div>
         ) : (
-          <div className="saved__list">
-            {playlists.map((pl) => (
-              <div key={pl.id} className="saved__playlist">
-                <button
-                  className="saved__playlist-row"
-                  onClick={() => toggle(pl.id)}
-                  data-cursor-hover
-                >
-                  <span className="saved__playlist-name">{pl.name}</span>
-                  <span className="saved__playlist-date">
-                    {formatDate(pl.createdAt)}
-                  </span>
-                  <span className="saved__playlist-count">
-                    {pl.tracks?.length ?? 0} TRACKS
-                  </span>
-                </button>
-
-                {expanded === pl.id && (
-                  <div className="saved__playlist-tracks">
-                    {(pl.tracks ?? []).map((t, i) => (
-                      <div key={i} className="saved__track">
-                        <span className="saved__track-num">
-                          {String(i + 1).padStart(2, '0')}
-                        </span>
-                        <span className="saved__track-title">{t.title}</span>
-                        <span className="saved__track-artist">{t.artist}</span>
-                        <span className="saved__track-dur">{t.duration}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+          playlists.map(pl => (
+            <PlaylistCard
+              key={pl.id}
+              playlist={pl}
+              uid={user.uid}
+            />
+          ))
         )}
       </main>
 
