@@ -1,0 +1,84 @@
+.results__header {
+  padding: 24px 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.results__back {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 22px;
+  cursor: none;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.results__back:hover {
+  color: #ffffff;
+}
+
+.results__main {
+  padding: 32px 32px 0;
+}
+
+.results__mood {
+  font-size: 32px;
+  font-style: italic;
+  color: #F5A623;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+  margin-bottom: 10px;
+  line-height: 1.1;
+}
+
+.results__subtitle {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.2);
+  margin-bottom: 36px;
+}
+
+.results__tracks {
+  margin-bottom: 48px;
+}
+
+.results__actions {
+  display: flex;
+  gap: 12px;
+}
+
+.results__btn {
+  flex: 1;
+  padding: 16px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family: system-ui, sans-serif;
+  border-radius: 0;
+  cursor: none;
+  transition: opacity 0.2s ease;
+}
+
+.results__btn:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.results__btn--save {
+  background: radial-gradient(circle at var(--bx, 50%) var(--by, 50%), #ffca5e 0%, #F5A623 65%);
+  color: #080808;
+  border: none;
+}
+
+.results__btn--save:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.results__btn--export {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
