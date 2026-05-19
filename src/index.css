@@ -1,0 +1,55 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --black: #080808;
+  --white: #ffffff;
+  --amber: #F5A623;
+  --font: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+html,
+body {
+  background-color: var(--black);
+  color: var(--white);
+  font-family: var(--font);
+  cursor: none;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 2px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); }
+
+.loading-splash {
+  position: fixed;
+  inset: 0;
+  background: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.loading-splash__text {
+  font-size: clamp(80px, 15vw, 140px);
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  animation: splash-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes splash-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.12; }
+}
+
+.page {
+  min-height: 100vh;
+  background: var(--black);
+  padding-bottom: 60px;
+}
