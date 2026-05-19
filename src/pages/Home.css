@@ -1,0 +1,119 @@
+.home__topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.home__logo {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+}
+
+.home__profile-initial {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.home__main {
+  padding: 48px 32px 0;
+}
+
+.home__hero {
+  font-size: clamp(36px, 7vw, 60px);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  line-height: 0.95;
+  margin-bottom: 48px;
+}
+
+.home__input-group {
+  display: flex;
+  flex-direction: column;
+  max-width: 480px;
+}
+
+.home__input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  font-size: 24px;
+  font-family: system-ui, sans-serif;
+  padding: 10px 0;
+  outline: none;
+  letter-spacing: -0.01em;
+  transition: border-color 0.2s ease;
+}
+
+.home__input::placeholder {
+  color: rgba(255, 255, 255, 0.18);
+}
+
+.home__input:focus {
+  border-bottom-color: rgba(255, 255, 255, 0.8);
+}
+
+.home__generate-btn {
+  background: radial-gradient(circle at var(--bx, 50%) var(--by, 50%), #ffca5e 0%, #F5A623 65%);
+  color: #080808;
+  border: none;
+  border-radius: 0;
+  padding: 15px;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family: system-ui, sans-serif;
+  cursor: none;
+  width: 100%;
+  transition: opacity 0.2s ease;
+}
+
+.home__generate-btn:hover {
+  opacity: 0.9;
+}
+
+.home__divider {
+  position: relative;
+  max-width: 480px;
+  margin: 48px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home__divider-text {
+  position: absolute;
+  background: #080808;
+  padding: 0 14px;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.home__vibes {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  scrollbar-width: none;
+}
+
+.home__vibes::-webkit-scrollbar {
+  display: none;
+}
