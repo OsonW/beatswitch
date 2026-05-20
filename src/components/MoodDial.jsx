@@ -1,13 +1,17 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { useMoodDial } from '../hooks/useMoodDial'
 import './MoodDial.css'
 
-const GRID_X = [37, 89, 141, 193, 245, 297]
-const GRID_Y = [52, 104, 148, 196, 244]
+const GRID_X = [28, 71, 130, 175, 231, 282]
+const GRID_Y = [44, 98, 148, 205, 258]
 
 export default function MoodDial({ onChange }) {
   const canvasRef = useRef(null)
   const { position, isDragging, moodDescriptor, handleTouchStart, handleTouchMove, handleTouchEnd } = useMoodDial(300)
+
+  useEffect(() => {
+    onChange?.({ energy: position.x, valence: position.y })
+  }, [position, onChange])
 
   const px = (position.x / 100) * 300
   const py = (1 - position.y / 100) * 300
@@ -16,14 +20,8 @@ export default function MoodDial({ onChange }) {
   const midY = 150 + (py - 150) / 2 - 8
   const tracePath = `M 150 150 Q ${midX} ${midY} ${px} ${py}`
 
-  const onStart = (e) => {
-    handleTouchStart(e, canvasRef)
-    onChange?.({ energy: position.x, valence: position.y })
-  }
-  const onMove = (e) => {
-    handleTouchMove(e, canvasRef)
-    onChange?.({ energy: position.x, valence: position.y })
-  }
+  const onStart = (e) => handleTouchStart(e, canvasRef)
+  const onMove  = (e) => handleTouchMove(e, canvasRef)
 
   return (
     <div className="mood-dial">

@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore'
 import { db } from '../firebase'
-import { generatePlaylist } from '../utils/generatePlaylist'
 import Vinyl from './Vinyl'
 import './FavouritesMix.css'
 
@@ -11,7 +10,7 @@ export default function FavouritesMix({ uid }) {
   const [loading, setLoading] = useState(false)
 
   const handleGenerate = async () => {
-    if (loading) return
+    if (!uid || loading) return
     setLoading(true)
     try {
       const q = query(
@@ -21,8 +20,7 @@ export default function FavouritesMix({ uid }) {
       )
       const snap = await getDocs(q)
       const moods = snap.docs.map(d => d.data().mood).filter(Boolean)
-      generatePlaylist({ vibes: moods, source: 'history' })
-      navigate('/results', { state: { mood: 'YOUR TASTE', fromHistory: true } })
+      navigate('/results', { state: { mood: 'YOUR TASTE', fromHistory: true, vibes: moods } })
     } catch (err) {
       console.error('Mix failed:', err)
       setLoading(false)

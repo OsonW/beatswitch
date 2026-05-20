@@ -58,7 +58,7 @@ export default function RadarChart() {
             />
           )
         })}
-        <polygon ref={fillRef} points={dataPolygon} fill="#FF4D00" opacity="0" style={{ opacity: 0 }} />
+        <polygon ref={fillRef} points={dataPolygon} fill="#FF4D00" style={{ opacity: 0 }} />
         <polygon
           ref={polygonRef}
           points={dataPolygon}
