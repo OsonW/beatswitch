@@ -1,52 +1,102 @@
-import { useState } from 'react'
+// src/components/TrackCard.jsx
+import { useState, useRef, useEffect } from 'react'
 import { useSwipe } from '../hooks/useSwipe'
+import { useLongPress } from '../hooks/useLongPress'
 import Waveform from './Waveform'
 import './TrackCard.css'
 
-const ART_GRADIENTS = [
-  'linear-gradient(135deg, #FF6B35, #A259FF)',
-  'linear-gradient(135deg, #C8FF00, #00D4AA)',
-  'linear-gradient(135deg, #A259FF, #4B0082)',
-  'linear-gradient(135deg, #FF6B9D, #FF6B35)',
-  'linear-gradient(135deg, #FFB347, #C8FF00)',
+const ART_COLORS = ['#FF4D00', '#7B2FFF', '#CCFF00', '#2A2A2A', '#F2F2F2', '#0D0D0D', '#3D0099', '#CC3D00']
+
+// Unique polygon clip per art slot
+const ART_CLIPS = [
+  'polygon(8% 0%, 100% 0%, 92% 100%, 0% 100%)',
+  'polygon(0% 8%, 100% 0%, 100% 92%, 0% 100%)',
+  'polygon(0% 0%, 92% 8%, 100% 100%, 8% 92%)',
+  'polygon(0% 0%, 100% 8%, 92% 100%, 0% 92%)',
+  'polygon(8% 8%, 100% 0%, 92% 92%, 0% 100%)',
+  'polygon(0% 0%, 92% 0%, 100% 92%, 8% 100%)',
+  'polygon(4% 0%, 96% 4%, 100% 96%, 0% 100%)',
+  'polygon(0% 4%, 100% 0%, 96% 100%, 4% 96%)',
 ]
 
-export default function TrackCard({ track, index = 0, playing = false, onSave }) {
+const PREVIEW_DURATION = 30000
+
+export default function TrackCard({
+  track,
+  index = 0,
+  previewing = false,
+  pinned = false,
+  showPinLabel = false,
+  onPreview,
+  onPin,
+  onSave,
+}) {
   const [swiped, setSwiped] = useState(false)
-  const [liked, setLiked] = useState(false)
+  const timerRef = useRef(null)
 
   const swipe = useSwipe({
     onSwipeLeft:  () => setSwiped(true),
     onSwipeRight: () => setSwiped(false),
   })
 
-  const gradient = ART_GRADIENTS[index % ART_GRADIENTS.length]
+  const longPress = useLongPress(() => onPin?.(track.name), 600)
+
+  const color = ART_COLORS[index % ART_COLORS.length]
+  const clip  = ART_CLIPS[index % ART_CLIPS.length]
+  const textOnLight = color === '#CCFF00' || color === '#F2F2F2'
+
+  const handleArtTap = (e) => {
+    e.stopPropagation()
+    onPreview?.(index)
+  }
 
   return (
     <div className={`tc-wrapper${swiped ? ' tc-wrapper--swiped' : ''}`}>
       <div
-        className={`track-card${playing ? ' track-card--playing' : ''}`}
+        className={`track-card${previewing ? ' track-card--previewing' : ''}${pinned ? ' track-card--pinned' : ''}`}
         {...swipe}
+        {...longPress}
       >
-        {playing && <div className="track-card__bar" />}
-        <div className="track-card__art" style={{ background: gradient }} />
-        <div className="track-card__info">
-          <p className={`track-card__name${playing ? ' track-card__name--playing' : ''}`}>
-            {track.name}
-          </p>
-          {playing && <Waveform speed="fast" bars={4} />}
-          {!playing && <p className="track-card__artist">{track.artist}</p>}
+        {/* Album art — irregular SVG shape */}
+        <div className="track-card__art-wrap" onClick={handleArtTap}>
+          <div
+            className="track-card__art"
+            style={{ background: color, clipPath: clip }}
+          />
+          {previewing && (
+            <svg className="track-card__progress-ring" viewBox="0 0 48 48">
+              <circle
+                cx="24" cy="24" r="20"
+                fill="none"
+                stroke="#FF4D00"
+                strokeWidth="2"
+                strokeDasharray="125.7"
+                strokeDashoffset="125.7"
+                className="track-card__ring-fill"
+              />
+            </svg>
+          )}
         </div>
+
+        <div className="track-card__info">
+          <p className="track-card__name">{track.name}</p>
+          {previewing
+            ? <Waveform speed="fast" bars={4} />
+            : <p className="track-card__artist">{track.artist}</p>
+          }
+          {pinned && <span className="track-card__pinned-label">PINNED</span>}
+        </div>
+
         <div className="track-card__meta">
           <span className="track-card__duration">{track.duration}</span>
-          <button
-            className={`track-card__heart${liked ? ' track-card__heart--liked' : ''}`}
-            onClick={() => setLiked(l => !l)}
-          >
-            ♥
-          </button>
+          {showPinLabel && (
+            <span className="track-card__pin-hint" onClick={(e) => { e.stopPropagation(); onPin?.(track.name) }}>
+              PIN
+            </span>
+          )}
         </div>
       </div>
+
       <button
         className="tc-save-action"
         onClick={() => { onSave?.(); setSwiped(false) }}
