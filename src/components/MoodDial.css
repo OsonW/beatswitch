@@ -1,0 +1,49 @@
+.mood-dial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.mood-dial__canvas {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  background: #0D0D0D;
+  touch-action: none;
+  flex-shrink: 0;
+}
+
+.mood-dial__svg {
+  width: 100%;
+  height: 100%;
+}
+
+.mood-dial__point--idle {
+  animation: pulse-point 2s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+.mood-dial__axis {
+  position: absolute;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.mood-dial__axis--left   { top: 50%; left: 6px;   transform: translateY(-50%); }
+.mood-dial__axis--right  { top: 50%; right: 6px;  transform: translateY(-50%); }
+.mood-dial__axis--top    { top: 6px; left: 50%;   transform: translateX(-50%); }
+.mood-dial__axis--bottom { bottom: 6px; left: 50%; transform: translateX(-50%); }
+
+.mood-dial__descriptor {
+  font-size: 15px;
+  font-style: italic;
+  color: var(--muted);
+  text-align: center;
+  min-height: 20px;
+}
