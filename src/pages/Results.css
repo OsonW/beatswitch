@@ -1,113 +1,159 @@
-/* Header */
+/* src/pages/Results.css */
 .results__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 20px 24px;
-  position: sticky;
-  top: 0;
-  background: var(--bg);
-  z-index: 10;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid var(--dim);
 }
 
 .results__back {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  color: var(--white);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
   background: none;
   border: none;
   cursor: pointer;
-  border-radius: 50%;
-  transition: background 0.15s ease, transform 0.08s ease;
 }
 
-.results__back:active {
-  background: var(--bg-card);
-  transform: scale(0.9);
-}
+.results__back:active { transform: scale(0.97); }
 
 .results__title {
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--muted);
 }
 
-/* Mood + vinyl area */
 .results__mood-area {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 20px;
+  justify-content: space-between;
   padding: 32px 24px 24px;
 }
 
 .results__mood-label {
   font-size: 28px;
-  font-style: italic;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--white);
+  flex: 1;
+  line-height: 1.1;
+}
+
+/* Toolbar */
+.results__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 24px 16px;
+}
+
+.results__reshuffle {
+  font-size: 12px;
   font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--white);
+  padding-bottom: 2px;
+  cursor: pointer;
+}
+
+.results__reshuffle:active { transform: scale(0.97); }
+
+.results__pin-count {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: var(--coral);
-  text-align: center;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
 }
 
 /* Tracks */
 .results__tracks {
-  padding: 8px 16px 120px;
+  padding-bottom: 100px;
 }
 
-/* Bottom actions */
+.results--shuffling .track-card {
+  animation: track-slide-out 0.2s ease-in forwards;
+}
+
+/* Actions */
 .results__actions {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 16px 24px calc(16px + env(safe-area-inset-bottom, 0px));
-  background: linear-gradient(to top, #0A0A0A 60%, transparent);
+  padding: 16px 24px max(16px, env(safe-area-inset-bottom));
+  background: var(--bg);
+  border-top: 1px solid var(--dim);
   display: flex;
   gap: 12px;
 }
 
 .results__btn {
   flex: 1;
-  padding: 16px 20px;
-  border-radius: var(--radius-pill);
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  border: none;
+  padding: 14px;
   cursor: pointer;
-  transition: opacity 0.15s ease, transform 0.08s ease;
-}
-
-.results__btn:active {
-  transform: scale(0.96);
+  border: none;
 }
 
 .results__btn--save {
   background: var(--coral);
-  color: #000;
+  color: #080808;
+  clip-path: polygon(0% 8%, 98% 0%, 100% 92%, 2% 100%);
 }
 
 .results__btn--saved {
-  background: rgba(255,107,53,0.3);
+  background: var(--dim);
+  color: var(--muted);
+}
+
+.results__btn:active { transform: scale(0.97); }
+.results__btn:disabled { opacity: 0.5; }
+
+/* Vibe Check */
+.vibe-check__heading {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.vibe-check__options {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.vibe-check__option {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding-bottom: 3px;
+}
+
+.vibe-check__option--selected {
+  border-bottom: 1px solid var(--coral);
   color: var(--coral);
 }
 
-.results__btn--save:disabled {
-  cursor: default;
-}
-
-.results__btn--spotify {
-  background: transparent;
-  color: var(--violet);
-  border: 1.5px solid var(--violet);
-}
+.vibe-check__option:active { transform: scale(0.97); }
