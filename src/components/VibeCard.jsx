@@ -1,39 +1,41 @@
-import { useState } from 'react'
 import './VibeCard.css'
 
-const VIBE_DATA = {
-  HYPE:         { emoji: '🔥', back: 'pure energy released',   gradient: 'linear-gradient(135deg, #FF6B35 0%, #FF9500 100%)' },
-  MELANCHOLIC:  { emoji: '🌙', back: 'beautifully broken',     gradient: 'linear-gradient(135deg, #A259FF 0%, #1A1A3E 100%)' },
-  FOCUS:        { emoji: '🎯', back: 'locked in flow',         gradient: 'linear-gradient(135deg, #C8FF00 0%, #00D4AA 100%)' },
-  'LATE NIGHT': { emoji: '🌃', back: 'city lights & silence',  gradient: 'linear-gradient(135deg, #4B0082 0%, #0A0A0A 100%)' },
-  HEARTBREAK:   { emoji: '💔', back: 'feels that heal',        gradient: 'linear-gradient(135deg, #FF6B9D 0%, #A259FF 100%)' },
-  'ROAD TRIP':  { emoji: '🚗', back: 'windows down, no plans', gradient: 'linear-gradient(135deg, #FFB347 0%, #FF6B35 100%)' },
+const VIBE_COLORS = {
+  HYPE:         { bg: '#FF4D00', text: '#080808' },
+  MELANCHOLIC:  { bg: '#7B2FFF', text: '#F2F2F2' },
+  FOCUS:        { bg: '#CCFF00', text: '#080808' },
+  'LATE NIGHT': { bg: '#111111', text: '#F2F2F2' },
+  HEARTBREAK:   { bg: '#3D0099', text: '#F2F2F2' },
+  'ROAD TRIP':  { bg: '#CC3D00', text: '#080808' },
 }
 
-export default function VibeCard({ vibe, active = false, onSelect }) {
-  const [flipped, setFlipped] = useState(false)
-  const { emoji, back, gradient } = VIBE_DATA[vibe] ?? VIBE_DATA.HYPE
+const CLIP_PATHS = [
+  'polygon(0% 4%, 96% 0%, 100% 96%, 4% 100%)',
+  'polygon(4% 0%, 100% 3%, 96% 100%, 0% 97%)',
+  'polygon(0% 0%, 97% 4%, 100% 100%, 3% 96%)',
+  'polygon(3% 0%, 100% 0%, 97% 100%, 0% 100%)',
+  'polygon(0% 3%, 98% 0%, 100% 97%, 2% 100%)',
+  'polygon(2% 0%, 100% 2%, 98% 100%, 0% 98%)',
+]
 
-  const handleTap = () => {
-    setFlipped(f => !f)
-    onSelect?.(vibe)
-  }
+const VIBE_KEYS = Object.keys(VIBE_COLORS)
+
+export default function VibeCard({ vibe, selected = false, onSelect }) {
+  const { bg, text } = VIBE_COLORS[vibe] ?? { bg: '#2A2A2A', text: '#F2F2F2' }
+  const clipIndex = VIBE_KEYS.indexOf(vibe) % CLIP_PATHS.length
+  const clipPath = CLIP_PATHS[clipIndex]
 
   return (
-    <div
-      className={`vibe-card${flipped ? ' vibe-card--flipped' : ''}${active ? ' vibe-card--active' : ''}`}
-      style={{ '--vc-gradient': gradient }}
-      onClick={handleTap}
+    <button
+      className={`vibe-card${selected ? ' vibe-card--selected' : ''}`}
+      onClick={() => onSelect?.(vibe)}
     >
-      <div className="vibe-card__inner">
-        <div className="vibe-card__front">
-          <span className="vibe-card__emoji">{emoji}</span>
-          <span className="vibe-card__label">{vibe}</span>
-        </div>
-        <div className="vibe-card__back">
-          <span className="vibe-card__desc">{back}</span>
-        </div>
+      <div className="vibe-card__inner" style={{ clipPath, background: bg }}>
+        <span className="vibe-card__label" style={{ color: selected ? 'var(--coral)' : text }}>
+          {vibe}
+        </span>
       </div>
-    </div>
+      {selected && <span className="vibe-card__underline" />}
+    </button>
   )
 }
