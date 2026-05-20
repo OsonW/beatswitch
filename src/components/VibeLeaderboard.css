@@ -1,0 +1,67 @@
+.leaderboard {
+  padding: 0 24px;
+  margin-bottom: 40px;
+}
+
+.leaderboard__title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.leaderboard__rows { display: flex; flex-direction: column; }
+
+.leaderboard__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid #1A1A1A;
+  background: none;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  animation: slide-up 0.4s ease-out var(--stagger, 0ms) both;
+}
+
+.leaderboard__row:active { transform: scale(0.98); }
+
+.leaderboard__rank-line {
+  flex-shrink: 0;
+  width: 2px;
+  height: var(--rank-h, 10px);
+  background: var(--coral);
+}
+
+.leaderboard__vibe {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.leaderboard__row--top .leaderboard__vibe {
+  font-size: 18px;
+  color: var(--coral);
+}
+
+.leaderboard__wave {
+  width: 50px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.leaderboard__count {
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
