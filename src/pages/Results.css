@@ -157,3 +157,17 @@
 }
 
 .vibe-check__option:active { transform: scale(0.97); }
+
+.results__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 64px 0;
+}
+
+.results__loading-label {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--muted);
+}
