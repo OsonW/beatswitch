@@ -5,6 +5,7 @@ import { signOut } from 'firebase/auth'
 import { auth } from '../firebase'
 import Navbar from '../components/Navbar'
 import RadarChart from '../components/RadarChart'
+import { useSpotify } from '../context/SpotifyContext'
 import './Profile.css'
 
 const TOP_VIBES    = ['LATE NIGHT', 'FOCUS', 'HYPE', 'MELANCHOLIC', 'ROAD TRIP']
@@ -17,7 +18,9 @@ export default function Profile({ user }) {
   const navigate = useNavigate()
   const [error, setError]   = useState(null)
 
-  const displayName = user?.displayName ?? (user?.isAnonymous ? 'GUEST' : 'USER')
+  const { spotifyUser } = useSpotify()
+  const displayName = spotifyUser?.display_name ?? user?.displayName ?? (user?.isAnonymous ? 'GUEST' : 'USER')
+  const avatarUrl   = spotifyUser?.images?.[0]?.url ?? null
   const initial     = displayName[0]?.toUpperCase() ?? '?'
   const since       = user?.metadata?.creationTime
     ? new Date(user.metadata.creationTime).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
@@ -36,21 +39,37 @@ export default function Profile({ user }) {
         <div className="profile__header">
           <div className="profile__blob-wrap">
             <svg width="120" height="120" viewBox="0 0 120 120">
-              <path
-                d="M60 8 C88 4, 116 28, 112 58 C108 90, 82 116, 52 112 C22 108, 4 82, 8 54 C12 26, 32 12, 60 8 Z"
-                fill="#FF4D00"
-              />
-              <text
-                x="60" y="66"
-                textAnchor="middle"
-                fontSize="36"
-                fontWeight="900"
-                fontFamily="system-ui"
-                fill="#080808"
-                letterSpacing="-2"
-              >
-                {initial}
-              </text>
+              <defs>
+                <clipPath id="profile-blob">
+                  <path d="M60 8 C88 4, 116 28, 112 58 C108 90, 82 116, 52 112 C22 108, 4 82, 8 54 C12 26, 32 12, 60 8 Z" />
+                </clipPath>
+              </defs>
+              {avatarUrl ? (
+                <image
+                  href={avatarUrl}
+                  x="0" y="0" width="120" height="120"
+                  preserveAspectRatio="xMidYMid slice"
+                  clipPath="url(#profile-blob)"
+                />
+              ) : (
+                <>
+                  <path
+                    d="M60 8 C88 4, 116 28, 112 58 C108 90, 82 116, 52 112 C22 108, 4 82, 8 54 C12 26, 32 12, 60 8 Z"
+                    fill="#FF4D00"
+                  />
+                  <text
+                    x="60" y="66"
+                    textAnchor="middle"
+                    fontSize="36"
+                    fontWeight="900"
+                    fontFamily="system-ui"
+                    fill="#080808"
+                    letterSpacing="-2"
+                  >
+                    {initial}
+                  </text>
+                </>
+              )}
             </svg>
           </div>
           <div>
