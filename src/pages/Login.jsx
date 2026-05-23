@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { signInWithPopup, GoogleAuthProvider, signInAnonymously } from 'firebase/auth'
+import { signInAnonymously } from 'firebase/auth'
 import { auth } from '../firebase'
+import { beginLogin } from '../spotify/auth'
 import Vinyl from '../components/Vinyl'
 import './Login.css'
 
@@ -8,15 +9,13 @@ export default function Login() {
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(null)
 
-  const handleGoogle = async () => {
-    setLoading('google')
+  const handleSpotify = async () => {
+    setLoading('spotify')
     setError(null)
     try {
-      await signInWithPopup(auth, new GoogleAuthProvider())
-    } catch (err) {
-      if (err.code !== 'auth/popup-closed-by-user') {
-        setError('Sign in failed. Please try again.')
-      }
+      await beginLogin()   // redirects away to Spotify
+    } catch {
+      setError('Could not start Spotify sign in. Please try again.')
       setLoading(null)
     }
   }
@@ -55,10 +54,10 @@ export default function Login() {
       <div className="login__actions">
         <button
           className="login__btn login__btn--spotify ripple-host"
-          onClick={handleGoogle}
+          onClick={handleSpotify}
           disabled={loading !== null}
         >
-          {loading === 'google' ? '···' : 'CONTINUE WITH SPOTIFY'}
+          {loading === 'spotify' ? '···' : 'CONTINUE WITH SPOTIFY'}
         </button>
         <button
           className="login__btn login__btn--guest ripple-host"
