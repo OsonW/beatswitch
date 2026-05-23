@@ -64,14 +64,12 @@ export default function Results({ user }) {
   const handlePreview = useCallback((index) => {
     clearTimeout(previewTimerRef.current)
     const audio = audioRef.current
-    if (previewIndex === index) {
-      setPreviewIndex(null)
-      if (audio) audio.pause()
-      return
-    }
-    setPreviewIndex(index)
+    if (audio) audio.pause()   // always stop the current clip before deciding what to do
+    if (previewIndex === index) { setPreviewIndex(null); return }   // toggle off
     const url = tracks[index]?.previewUrl
-    if (audio && url) {
+    if (!url) { setPreviewIndex(null); return }   // no preview available → no-op
+    setPreviewIndex(index)
+    if (audio) {
       audio.src = url
       audio.currentTime = 0
       audio.play().catch(() => {})   // ignore autoplay-policy rejections
