@@ -102,6 +102,10 @@ export default function Results({ user }) {
   const handleReshuffle = async () => {
     if (shuffling) return
     setShuffling(true)
+    // Stop any active preview so previewIndex doesn't point at a swapped-out track
+    clearTimeout(previewTimerRef.current)
+    setPreviewIndex(null)
+    if (audioRef.current) audioRef.current.pause()
     const pins = pinnedNames   // snapshot so a mid-reshuffle pin change can't skew the merge
     const fresh = (await generatePlaylist(moodParams)).filter(t => !pins.has(t.name))
     setTimeout(() => {
@@ -218,7 +222,7 @@ export default function Results({ user }) {
         </div>
       </BottomSheet>
 
-      <audio ref={audioRef} onEnded={() => setPreviewIndex(null)} />
+      <audio ref={audioRef} onEnded={() => { clearTimeout(previewTimerRef.current); setPreviewIndex(null) }} />
 
       <Toast message={toastMsg} onDone={() => setToastMsg(null)} />
     </div>
