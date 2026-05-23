@@ -5,7 +5,6 @@ import { signOut } from 'firebase/auth'
 import { auth } from '../firebase'
 import Navbar from '../components/Navbar'
 import RadarChart from '../components/RadarChart'
-import { useSpotify } from '../context/SpotifyContext'
 import './Profile.css'
 
 const TOP_VIBES    = ['LATE NIGHT', 'FOCUS', 'HYPE', 'MELANCHOLIC', 'ROAD TRIP']
@@ -18,9 +17,8 @@ export default function Profile({ user }) {
   const navigate = useNavigate()
   const [error, setError]   = useState(null)
 
-  const { spotifyUser } = useSpotify()
-  const displayName = spotifyUser?.display_name ?? user?.displayName ?? (user?.isAnonymous ? 'GUEST' : 'USER')
-  const avatarUrl   = spotifyUser?.images?.[0]?.url ?? null
+  const displayName = user?.displayName ?? (user?.isAnonymous ? 'GUEST' : 'USER')
+  const avatarUrl   = user?.photoURL ?? null
   const initial     = displayName[0]?.toUpperCase() ?? '?'
   const since       = user?.metadata?.creationTime
     ? new Date(user.metadata.creationTime).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
