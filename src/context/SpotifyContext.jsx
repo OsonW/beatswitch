@@ -5,6 +5,7 @@ import { getMe } from '../spotify/client'
 
 const SpotifyContext = createContext({ connected: false, spotifyUser: null, ready: false })
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useSpotify = () => useContext(SpotifyContext)
 
 export function SpotifyProvider({ children }) {
