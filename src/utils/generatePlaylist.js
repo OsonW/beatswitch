@@ -1,7 +1,6 @@
 // src/utils/generatePlaylist.js
-import { getStoredTokens } from '../spotify/auth'
-import { getTopArtists, searchTracks } from '../spotify/client'
-import { moodQuery } from '../spotify/moodQuery'
+import { searchTracks } from '../music/deezer'
+import { moodQuery } from '../music/moodQuery'
 
 const STUB_TRACKS = [
   { name: 'No Church in the Wild', artist: 'Jay-Z & Kanye West', duration: '4:32' },
@@ -22,8 +21,8 @@ function stub() {
   return [...STUB_TRACKS].sort(() => Math.random() - 0.5).slice(0, 8)
 }
 
-function msToDuration(ms) {
-  const total = Math.round((ms ?? 0) / 1000)
+function secToDuration(sec) {
+  const total = Math.round(sec ?? 0)
   const m = Math.floor(total / 60)
   const s = String(total % 60).padStart(2, '0')
   return `${m}:${s}`
@@ -32,36 +31,25 @@ function msToDuration(ms) {
 function mapTrack(t) {
   return {
     id: t.id,
-    uri: t.uri,
-    name: t.name,
-    artist: t.artists?.map(a => a.name).join(', ') ?? 'Unknown',
-    duration: msToDuration(t.duration_ms),
+    name: t.title,
+    artist: t.artist?.name ?? 'Unknown',
+    duration: secToDuration(t.duration),
+    previewUrl: t.preview ?? null,
   }
 }
 
 export async function generatePlaylist(params = {}) {
-  // Guests (no Spotify token) get the local stub.
-  if (!getStoredTokens()) return stub()
-
-  // Personalization seeds from the user's top artists (optional).
-  let seeds = {}
-  try {
-    const top = await getTopArtists(5)
-    seeds = { genres: [...new Set((top.items ?? []).flatMap(a => a.genres ?? []))].slice(0, 3) }
-  } catch { /* personalization is best-effort */ }
-
-  const queries = moodQuery(params, seeds)
+  const queries = moodQuery(params)
   const seen = new Set()
   const collected = []
   for (const q of queries) {
     try {
-      const res = await searchTracks(q, 10)
-      for (const t of res?.tracks?.items ?? []) {
+      const items = await searchTracks(q, 10)
+      for (const t of items ?? []) {
         if (t?.id && !seen.has(t.id)) { seen.add(t.id); collected.push(mapTrack(t)) }
       }
     } catch { /* skip a failed query, keep others */ }
   }
-
   if (!collected.length) return stub()
   return collected.sort(() => Math.random() - 0.5).slice(0, 10)
 }
