@@ -1,0 +1,49 @@
+.fav-mix {
+  padding: 40px 24px 32px;
+}
+
+.fav-mix__title {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+
+.fav-mix__sub {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.fav-mix__cta {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--coral);
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--coral);
+  padding-bottom: 2px;
+  cursor: pointer;
+  transition: transform 0.08s ease;
+}
+
+.fav-mix__cta:active { transform: scale(0.97); }
+
+.fav-mix__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.fav-mix__loading-text {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--muted);
+}

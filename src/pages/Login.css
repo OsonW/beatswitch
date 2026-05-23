@@ -1,103 +1,165 @@
 .login {
-  position: relative;
   min-height: 100vh;
-  background: #080808;
-  overflow: hidden;
+  background: var(--bg);
   display: flex;
   flex-direction: column;
+  align-items: center;
+  padding: 0 24px 48px;
+  position: relative;
+  overflow: hidden;
 }
 
-.login__header {
-  padding: 48px 40px 0;
+/* Background blobs */
+.login__blob {
+  position: absolute;
+  border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
+  pointer-events: none;
+  animation: blob-morph 8s ease-in-out infinite;
 }
 
-.login__headline {
-  font-size: clamp(64px, 11vw, 110px);
+.login__blob--1 {
+  width: 320px;
+  height: 320px;
+  background: var(--coral);
+  opacity: 0.07;
+  top: -80px;
+  right: -80px;
+  animation-delay: 0s;
+}
+
+.login__blob--2 {
+  width: 280px;
+  height: 280px;
+  background: var(--violet);
+  opacity: 0.06;
+  bottom: 100px;
+  left: -80px;
+  animation-delay: -4s;
+}
+
+/* Vinyl area */
+.login__vinyl-area {
+  position: relative;
+  margin-top: 80px;
+  margin-bottom: 40px;
+}
+
+.login__note {
+  position: absolute;
+  font-size: 32px;
+  color: var(--white);
+  opacity: 0.15;
+  animation: float 3s ease-in-out infinite;
+  user-select: none;
+}
+
+.login__note--1 {
+  top: -20px;
+  left: -40px;
+  animation-duration: 2.8s;
+  animation-delay: 0s;
+  font-size: 28px;
+}
+
+.login__note--2 {
+  top: 20px;
+  right: -50px;
+  animation-duration: 3.5s;
+  animation-delay: -1s;
+  font-size: 36px;
+}
+
+.login__note--3 {
+  bottom: -10px;
+  left: -20px;
+  animation-duration: 4s;
+  animation-delay: -2s;
+  font-size: 20px;
+}
+
+/* Wordmark */
+.login__content {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.login__wordmark {
+  font-size: clamp(52px, 16vw, 80px);
   font-weight: 900;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.04em;
+  line-height: 1;
   text-transform: uppercase;
-  line-height: 0.9;
-  color: #ffffff;
-  white-space: nowrap;
-  display: flex;
-  margin-left: -3px;
 }
 
-.login__letter {
-  display: inline-block;
-  transition: transform 0.08s ease-out;
-  will-change: transform;
+.login__beat {
+  color: var(--white);
+}
+
+.login__switch {
+  color: var(--coral);
 }
 
 .login__tagline {
-  margin-top: 20px;
-  font-size: 12px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.35);
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--muted);
+  font-style: italic;
+  letter-spacing: 0.02em;
 }
 
-.login__divider {
-  height: 1px;
-  background: rgba(255, 255, 255, 0.15);
-  margin-top: 40px;
-}
-
+/* Buttons */
 .login__actions {
-  padding: 40px 40px 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 14px;
+  gap: 12px;
+  margin-bottom: 48px;
 }
 
 .login__btn {
-  font-family: system-ui, sans-serif;
-  font-size: 12px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  padding: 16px 36px;
-  border-radius: 0;
-  cursor: none;
+  width: 100%;
+  padding: 18px 24px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
   font-weight: 700;
-  transition: opacity 0.2s ease;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
   border: none;
+  transition: opacity 0.2s ease, transform 0.08s ease;
 }
 
-.login__btn:hover {
-  opacity: 0.85;
+.login__btn:active {
+  transform: scale(0.97);
+}
+
+.login__btn:disabled {
+  opacity: 0.5;
 }
 
 .login__btn--spotify {
-  background: radial-gradient(circle at var(--bx, 50%) var(--by, 50%), #ffca5e 0%, #F5A623 65%);
-  color: #080808;
+  background: var(--coral);
+  color: #000;
 }
 
 .login__btn--guest {
-  background: transparent;
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-}
-
-.login__features {
-  position: absolute;
-  bottom: 40px;
-  right: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 7px;
-  font-size: 11px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.2);
+  background: var(--violet);
+  color: #fff;
 }
 
 .login__error {
-  padding: 0 40px;
-  margin-top: 16px;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(255, 100, 100, 0.8);
+  font-size: 12px;
+  color: rgba(255, 80, 80, 0.9);
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+/* Feature lines */
+.login__features {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
 }

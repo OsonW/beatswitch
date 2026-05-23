@@ -1,72 +1,137 @@
+/* src/components/TrackCard.css */
+.tc-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
 .track-card {
   display: flex;
   align-items: center;
-  padding: 20px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  gap: 24px;
-  transition: transform 0.2s ease;
+  gap: 14px;
+  padding: 14px 24px;
+  border-bottom: 1px solid #111;
+  background: var(--bg);
   position: relative;
-  cursor: none;
+  transition: transform 0.2s ease;
 }
 
-.track-card::before {
-  content: '';
-  position: absolute;
-  left: -8px;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: #F5A623;
-  opacity: 0;
-  transition: opacity 0.2s ease;
+.track-card--pinned {
+  border-left: 3px solid var(--coral);
+  padding-left: 21px;
 }
 
-.track-card:hover {
-  transform: translateX(8px);
-}
+.track-card:active { transform: scale(0.98); }
 
-.track-card:hover::before {
-  opacity: 1;
-}
-
-.track-card__number {
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.25);
-  width: 24px;
+/* Art */
+.track-card__art-wrap {
+  position: relative;
+  width: 44px;
+  height: 44px;
   flex-shrink: 0;
-  font-variant-numeric: tabular-nums;
+  cursor: pointer;
 }
 
+.track-card__art {
+  width: 44px;
+  height: 44px;
+}
+
+.track-card__progress-ring {
+  position: absolute;
+  inset: -4px;
+  width: 52px;
+  height: 52px;
+  pointer-events: none;
+}
+
+.track-card__ring-fill {
+  animation: ring-fill 30s linear forwards;
+  transform-origin: center;
+  transform: rotate(-90deg);
+}
+
+@keyframes ring-fill {
+  from { stroke-dashoffset: 125.7; }
+  to   { stroke-dashoffset: 0; }
+}
+
+/* Info */
 .track-card__info {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  min-width: 0;
+  gap: 3px;
 }
 
-.track-card__title {
-  font-size: 18px;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  color: #ffffff;
+.track-card__name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--white);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .track-card__artist {
-  font-size: 11px;
-  letter-spacing: 0.12em;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.track-card__pinned-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--coral);
+}
+
+/* Meta */
+.track-card__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
 }
 
 .track-card__duration {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+
+.track-card__pin-hint {
   font-size: 11px;
-  letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.25);
-  flex-shrink: 0;
-  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.track-card__pin-hint:active { color: var(--coral); }
+
+/* Swipe */
+.tc-wrapper--swiped .track-card {
+  transform: translateX(-80px);
+}
+
+.tc-save-action {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 80px;
+  background: var(--coral);
+  color: #080808;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

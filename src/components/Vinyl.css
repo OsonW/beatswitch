@@ -1,0 +1,9 @@
+.vinyl {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vinyl--active svg {
+  animation: spin-slow 20s linear infinite;
+}

@@ -1,0 +1,28 @@
+.waveform {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 20px;
+  --wf-color: var(--coral);
+}
+
+.waveform__bar {
+  background: var(--wf-color);
+  animation: eq-bounce var(--dur, 0.9s) ease-in-out infinite alternate;
+  animation-delay: calc(var(--i) * 0.12s);
+}
+
+/* Irregular widths and max heights per bar index */
+.waveform__bar:nth-child(1) { width: 3px; --h: 40%; }
+.waveform__bar:nth-child(2) { width: 4px; --h: 75%; }
+.waveform__bar:nth-child(3) { width: 2px; --h: 55%; }
+.waveform__bar:nth-child(4) { width: 4px; --h: 90%; }
+.waveform__bar:nth-child(5) { width: 3px; --h: 48%; }
+
+@keyframes eq-bounce {
+  0%   { height: 3px; }
+  100% { height: var(--h, 80%); }
+}
+
+.waveform--fast  .waveform__bar { --dur: 0.55s; }
+.waveform--slow  .waveform__bar { --dur: 1.4s; }

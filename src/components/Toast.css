@@ -1,0 +1,16 @@
+.toast {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: var(--coral);
+  color: #080808;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: max(16px, env(safe-area-inset-top)) 24px 16px;
+  animation: slide-in-top 0.25s ease-out forwards;
+}
