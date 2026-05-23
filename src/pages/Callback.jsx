@@ -13,17 +13,20 @@ export default function Callback() {
   useEffect(() => {
     if (ran.current) return   // guard against React StrictMode double-invoke
     ran.current = true
+    let timer
     async function run() {
       try {
         await handleCallback()
         if (!auth.currentUser) await signInAnonymously(auth)
         navigate('/home', { replace: true })
-      } catch {
+      } catch (err) {
+        console.error('[Callback] Spotify auth failed:', err)
         setError('Spotify sign-in failed. Returning to login.')
-        setTimeout(() => navigate('/login', { replace: true }), 2500)
+        timer = setTimeout(() => navigate('/login', { replace: true }), 2500)
       }
     }
     run()
+    return () => clearTimeout(timer)
   }, [navigate])
 
   return (
