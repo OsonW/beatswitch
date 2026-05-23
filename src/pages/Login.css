@@ -136,7 +136,7 @@
   opacity: 0.5;
 }
 
-.login__btn--spotify {
+.login__btn--google {
   background: var(--coral);
   color: #000;
 }
