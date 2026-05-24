@@ -23,7 +23,11 @@ export default function Home({ user }) {
 
   const name = firstName(user)
   const greeting = useMemo(() => pickGreeting(name), [name])
-  const [before, after] = greeting.split(name)
+  // Split around the first occurrence of the name so it can be colored; rejoin any
+  // trailing parts so no text is dropped if the name also appears literally in the template.
+  const parts = greeting.split(name)
+  const before = parts[0]
+  const after = parts.length > 1 ? parts.slice(1).join(name) : ''
 
   const canGenerate =
     (activeTab === 'DESCRIBE' && mood.trim()) ||
