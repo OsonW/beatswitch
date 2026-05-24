@@ -1,18 +1,5 @@
 {
   "permissions": {
-    "allow": [
-      "Bash(git add *)",
-      "Bash(git commit *)",
-      "Bash(Get-Item -Path \"C:\\\\Users\\\\osonw\\\\Documents\\\\github-workspace\\\\beatswitch\\\\src\\\\components\" -ErrorAction SilentlyContinue)",
-      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\osonw\\\\Documents\\\\github-workspace\\\\beatswitch\\\\src\\\\components\" -Force)",
-      "Bash(git rm *)",
-      "Bash(npm run *)",
-      "Bash(git merge *)",
-      "Bash(git checkout *)",
-      "Bash(git worktree *)",
-      "Bash(git branch *)",
-      "Bash(npm test *)",
-      "Bash(git show *)"
-    ]
+    "defaultMode": "bypassPermissions"
   }
 }
