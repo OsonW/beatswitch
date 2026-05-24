@@ -1,39 +1,4 @@
 /* src/pages/Home.css */
-.home__header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: var(--bg);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px 24px;
-  border-bottom: 1px solid var(--dim);
-}
-
-.home__logo {
-  font-size: 20px;
-  font-weight: 900;
-  letter-spacing: -0.04em;
-  color: var(--white);
-}
-
-.home__avatar {
-  width: 32px;
-  height: 32px;
-  background: var(--dim);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--muted);
-  cursor: pointer;
-  clip-path: polygon(0% 8%, 92% 0%, 100% 92%, 8% 100%);
-}
-
-.home__avatar:active { transform: scale(0.97); }
-
 .home__main {
   padding: 32px 24px 0;
 }
@@ -222,3 +187,13 @@
 
 .home__generate:active   { transform: scale(0.97); }
 .home__generate:disabled { opacity: 0.35; }
+
+.home__greeting {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  padding: 28px 24px 0;
+}
+
+.home__greeting-name { color: var(--coral); }

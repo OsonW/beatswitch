@@ -1,14 +1,12 @@
 // src/pages/Home.jsx
-import { useState, useRef } from 'react'
+import { useState, useRef, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useBlend } from '../hooks/useBlend'
-import { useMoodDial } from '../hooks/useMoodDial'
-import { generatePlaylist } from '../utils/generatePlaylist'
+import { pickGreeting, firstName } from '../utils/greeting'
 import Navbar from '../components/Navbar'
 import VibeCard from '../components/VibeCard'
 import BlendOrb from '../components/BlendOrb'
 import MoodDial from '../components/MoodDial'
-import MoodOfDay from '../components/MoodOfDay'
 import VibeLeaderboard from '../components/VibeLeaderboard'
 import './Home.css'
 
@@ -19,10 +17,13 @@ export default function Home({ user }) {
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('DESCRIBE')
   const [mood, setMood] = useState('')
-  const dialCanvasRef = useRef(null)
+  const [dial, setDial] = useState({ energy: 50, valence: 50, moodDescriptor: 'balanced, undefined' })
 
-  const { selectedVibes, weights, toggleVibe, adjustWeight, blendLabel } = useBlend()
-  const { position, isDragging, moodDescriptor, handleTouchStart, handleTouchMove, handleTouchEnd } = useMoodDial(300)
+  const { selectedVibes, weights, toggleVibe, adjustWeight } = useBlend()
+
+  const name = firstName(user)
+  const greeting = useMemo(() => pickGreeting(name), [name])
+  const [before, after] = greeting.split(name)
 
   const canGenerate =
     (activeTab === 'DESCRIBE' && mood.trim()) ||
@@ -36,7 +37,7 @@ export default function Home({ user }) {
     } else if (activeTab === 'BLEND') {
       navigate('/results', { state: { mood: selectedVibes[0] ?? 'BLEND', vibes: selectedVibes.map(v => ({ name: v, weight: weights[v] })) } })
     } else {
-      navigate('/results', { state: { mood: moodDescriptor, energy: position.x, valence: position.y } })
+      navigate('/results', { state: { mood: dial.moodDescriptor, energy: dial.energy, valence: dial.valence } })
     }
   }
 
@@ -44,21 +45,13 @@ export default function Home({ user }) {
 
   return (
     <div className="home page">
-      <header className="home__header">
-        <span className="home__logo">BS</span>
-        <button className="home__avatar" onClick={() => navigate('/profile')}>
-          {(user?.displayName?.[0] ?? (user?.isAnonymous ? 'G' : 'U')).toUpperCase()}
-        </button>
-      </header>
-
-      <MoodOfDay />
-
       <main className="home__main">
+        <p className="home__greeting">{before}<span className="home__greeting-name">{name}</span>{after}</p>
         <h1 className="home__hero">WHAT'S<br />THE VIBE?</h1>
 
         {/* Tab switcher */}
         <div className="home__tabs">
-          {TABS.map((tab, i) => (
+          {TABS.map((tab) => (
             <button
               key={tab}
               className={`home__tab${activeTab === tab ? ' home__tab--active' : ''}`}
@@ -132,7 +125,7 @@ export default function Home({ user }) {
         {/* DIAL */}
         {activeTab === 'DIAL' && (
           <div className="home__dial">
-            <MoodDial onChange={() => {}} />
+            <MoodDial onChange={setDial} />
           </div>
         )}
 
