@@ -17,8 +17,12 @@ function dialQuery(energy, valence) {
 }
 
 export function moodQuery(params = {}) {
-  const { mood, vibes, energy, valence } = params
+  const { mood, vibes, energy, valence, artists } = params
   const queries = []
+
+  if (Array.isArray(artists) && artists.length) {
+    return artists.map(a => `${a}`.trim()).filter(Boolean)
+  }
 
   if (Array.isArray(vibes) && vibes.length) {
     for (const v of vibes) {

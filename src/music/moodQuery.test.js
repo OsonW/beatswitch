@@ -23,4 +23,13 @@ describe('moodQuery', () => {
   it('falls back to a default query when nothing matches', () => {
     expect(moodQuery({})).toEqual(['top hits'])
   })
+
+  it('returns one query per artist when artists are provided (highest priority)', () => {
+    const q = moodQuery({ artists: ['Drake', 'SZA'], mood: 'chill', vibes: [{ name: 'HYPE' }] })
+    expect(q).toEqual(['Drake', 'SZA'])
+  })
+
+  it('ignores an empty artists array and falls through to mood', () => {
+    expect(moodQuery({ artists: [], mood: 'chill' })).toEqual(['chill'])
+  })
 })
