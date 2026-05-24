@@ -36,4 +36,12 @@ describe('generatePlaylist', () => {
     searchTracks.mockRejectedValue(new Error('network'))
     expect((await generatePlaylist({ mood: 'chill' })).length).toBeGreaterThan(0)
   })
+
+  it('includes the album cover when present', async () => {
+    searchTracks.mockResolvedValue([
+      { id: 9, title: 'X', duration: 100, preview: 'p', artist: { name: 'A' }, album: { cover_medium: 'http://c/9.jpg' } },
+    ])
+    const tracks = await generatePlaylist({ mood: 'x' })
+    expect(tracks[0].cover).toBe('http://c/9.jpg')
+  })
 })

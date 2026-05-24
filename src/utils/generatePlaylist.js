@@ -35,6 +35,7 @@ function mapTrack(t) {
     artist: t.artist?.name ?? 'Unknown',
     duration: secToDuration(t.duration),
     previewUrl: t.preview ?? null,
+    cover: t.album?.cover_medium ?? t.album?.cover_big ?? null,
   }
 }
 
