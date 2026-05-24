@@ -61,7 +61,9 @@ export default function TrackCard({
         <div className="track-card__art-wrap" onClick={handleArtTap}>
           <div
             className="track-card__art"
-            style={{ background: color, clipPath: clip }}
+            style={track.cover
+              ? { backgroundImage: `url(${track.cover})`, backgroundSize: 'cover', backgroundPosition: 'center', clipPath: clip }
+              : { background: color, clipPath: clip }}
           />
           {previewing && (
             <svg className="track-card__progress-ring" viewBox="0 0 48 48">
