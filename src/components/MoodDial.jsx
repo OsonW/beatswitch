@@ -10,8 +10,8 @@ export default function MoodDial({ onChange }) {
   const { position, isDragging, moodDescriptor, handleTouchStart, handleTouchMove, handleTouchEnd } = useMoodDial(300)
 
   useEffect(() => {
-    onChange?.({ energy: position.x, valence: position.y })
-  }, [position, onChange])
+    onChange?.({ energy: position.x, valence: position.y, moodDescriptor })
+  }, [position, moodDescriptor, onChange])
 
   const px = (position.x / 100) * 300
   const py = (1 - position.y / 100) * 300
