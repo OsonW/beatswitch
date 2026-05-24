@@ -36,6 +36,11 @@ function PlaylistRow({ playlist, uid }) {
           <p className="pl-row__name">{playlist.name}</p>
           <span className="pl-row__meta">{formatDate(playlist.createdAt)} · {playlist.tracks?.length ?? 0} tracks</span>
         </div>
+        <button
+          className="pl-row__delete-x"
+          onClick={(e) => { e.stopPropagation(); setShowDelete(true) }}
+          aria-label="Delete mix"
+        >✕</button>
         <span className="pl-row__chevron">{expanded ? '▲' : '▼'}</span>
       </div>
 
