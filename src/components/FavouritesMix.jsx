@@ -19,8 +19,23 @@ export default function FavouritesMix({ uid }) {
         limit(10)
       )
       const snap = await getDocs(q)
-      const moods = snap.docs.map(d => d.data().mood).filter(Boolean)
-      navigate('/results', { state: { mood: 'YOUR TASTE', fromHistory: true, vibes: moods } })
+
+      // Frequency-rank artists across saved tracks, take the top 4 distinct.
+      const counts = {}
+      snap.docs.forEach(d => {
+        (d.data().tracks ?? []).forEach(t => {
+          (t.artist ?? '').split(',').forEach(a => {
+            const name = a.trim()
+            if (name) counts[name] = (counts[name] ?? 0) + 1
+          })
+        })
+      })
+      const topArtists = Object.entries(counts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 4)
+        .map(([name]) => name)
+
+      navigate('/results', { state: { mood: 'YOUR TASTE', fromHistory: true, artists: topArtists } })
     } catch (err) {
       console.error('Mix failed:', err)
       setLoading(false)
