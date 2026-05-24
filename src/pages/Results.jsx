@@ -23,6 +23,7 @@ export default function Results({ user }) {
     vibes:   state?.vibes,
     energy:  state?.energy,
     valence: state?.valence,
+    artists: state?.artists,
   }
 
   const [tracks,       setTracks]       = useState([])
